@@ -3,18 +3,21 @@ version: '3.8'
 services:
   shopping-app:
     build:
-      context: .
+      context: ./app
+      #Dockerfile wird zum erstellen des Image verwendet
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+        #Ports unter denen Frontend erreichbar ist 
+      - "3000:3000"
     environment:
-      - BACKEND_URL=http://localhost:3000   # neu beschrieben mit URl wenn container gestartet wird ? 
+      - BACKEND_URL=http://backend-service:8080   # neu beschrieben mit URl wenn container gestartet wird ? URL nach backend 
     depends_on:
       - backend-service
 
-  #backend-service:
-  #  image: your-backend-image
-  #  ports:
-  #    - "5000:5000"
-  #  environment:
-  #    - NODE_ENV=development
+  backend-service:
+    image: backend.v1   # richtiges image finden ?
+    ports:
+        #Ports unter denen Backend erreichbar ist 
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
