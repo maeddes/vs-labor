@@ -15,7 +15,7 @@ services:
       - backend-service
 
   backend-service:
-    image: backend.v1   # richtiges image finden ?
+    image: todobackend:v24   # richtiges image finden ?
     ports:
         #Ports unter denen Backend erreichbar ist 
       - "8080:8080"
