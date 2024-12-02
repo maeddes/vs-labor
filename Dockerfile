@@ -1,17 +1,20 @@
-FROM node:22 
+﻿# Verwende ein offizielles Node.js-Image als Basis
+FROM node:18-alpine
 
-# Arbeitsverzeicnins für Projekt Coden VS_Labo  in container erstellen
+# Setze das Arbeitsverzeichnis im Container
 WORKDIR /app
 
-# Abhängigkeiten installieren 
+# Kopiere die package.json und package-lock.json, um die Abhängigkeiten zu installieren
 COPY package*.json ./
+
+# Installiere die Abhängigkeiten
 RUN npm install
 
-# Anwendung kopieren 
+# Kopiere den Rest des Codes in das Arbeitsverzeichnis
 COPY . .
 
-# Port 8080 für docker öffnen 
+# Exponiere den Port 8080
 EXPOSE 8080
 
-# Anwendung starten
-CMD ["node", "index.js"]
+# Starte die Anwendung
+CMD ["npm", "run", "start"]

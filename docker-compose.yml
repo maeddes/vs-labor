@@ -1,23 +1,39 @@
-version: '3.8'
-
+﻿version: '3.8'
 services:
-  shopping-app:
-    build:
-      context: ./app
-      #Dockerfile wird zum erstellen des Image verwendet
-      dockerfile: Dockerfile
-    ports:
-        #Ports unter denen Frontend erreichbar ist 
-      - "3000:3000"
+  shoppingdb:  # PostgreSQL-Datenbank
+    image: postgres
     environment:
-      - BACKEND_URL=http://backend-service:8080   # neu beschrieben mit URl wenn container gestartet wird ? URL nach backend 
-    depends_on:
-      - backend-service
+      POSTGRES_USER: hse24
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: shoppingdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - shoppingdb-data:/var/lib/postgresql/data  # Persistenz für Daten
 
-  backend-service:
-    image: todobackend:v24   # richtiges image finden ?
-    ports:
-        #Ports unter denen Backend erreichbar ist 
-      - "8080:8080"
+  shopping-backend:  # Dein Backend-Service (verwende den korrekten Namen des Images)
+    #build:
+    #  context: ./backend 
+    image: maeddes/backendspringboot:hse24
+    #build:
+    #  context: ./backend  # Wenn dein Backend im Ordner "backend" ist
     environment:
-      - NODE_ENV=development
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shoppingdb:5432/shoppingdb
+      SPRING_DATASOURCE_USERNAME: hse24
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - shoppingdb
+    ports:
+      - "8080:8080"
+
+  shopping-frontend:  # Dein Next.js Frontend
+    build: .
+    environment:
+      API_URL: "http://shopping-backend:8080/api/shopping"  # Verweis auf das Backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - shopping-backend
+
+volumes:
+  shoppingdb-data:  # Für die Persistenz der Datenbankdaten
