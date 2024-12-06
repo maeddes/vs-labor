@@ -1,15 +1,16 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './ShoppingApp.module.css';
+require('dotenv').config();
 
 export default function ShoppingApp() {
     const [items, setItems] = useState([]);
     const [cart, setCart] = useState([]);
     const [selectedItemName, setSelectedItemName] = useState('');
     const [selectedItemAmount, setSelectedItemAmount] = useState(1);
-    const BASE_URL = process.env.BACKEND_URL;
-
-
+    //const BASE_URL = process.env.BACKEND_URL;
+    //const API_URL = process.env.API_URL;
+    
 
 
     
@@ -17,10 +18,18 @@ export default function ShoppingApp() {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const response = await axios.get('${process.env.API_URL}/api/shopping');
+                const response = await axios.get("https://8080-1fe1ix-vslabor-1656h38tm4q.ws-eu117.gitpod.io/api/shopping");
+                //const response = await axios.get(process.env.API_URL);
                 setItems(response.data);
             } catch (error) {
                 console.error('Error fetching items:', error);
+                if (error.response) {
+                    console.error('Server responded with:', error.response.data);
+                } else if (error.request) {
+                    console.error('Request was made but no response received:', error.request);
+                } else {
+                    console.error('Error setting up the request:', error.message);
+                }
             }
         };
 
