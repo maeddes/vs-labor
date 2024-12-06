@@ -1,7 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
+const axios = require('axios');
 import styles from './ShoppingApp.module.css';
-require('dotenv').config();
+
 
 export default function ShoppingApp() {
     const [items, setItems] = useState([]);
@@ -9,7 +10,7 @@ export default function ShoppingApp() {
     const [selectedItemName, setSelectedItemName] = useState('');
     const [selectedItemAmount, setSelectedItemAmount] = useState(1);
     //const BASE_URL = process.env.BACKEND_URL;
-    //const API_URL = process.env.API_URL;
+    const API_URL = process.env.API_URL;
     
 
 
@@ -19,6 +20,7 @@ export default function ShoppingApp() {
         const fetchItems = async () => {
             try {
                 const response = await axios.get("https://8080-1fe1ix-vslabor-1656h38tm4q.ws-eu117.gitpod.io/api/shopping");
+                //const response = await axios.get(API_URL);
                 //const response = await axios.get(process.env.API_URL);
                 setItems(response.data);
             } catch (error) {
@@ -71,7 +73,8 @@ export default function ShoppingApp() {
         const newItem = { name: selectedItemName, amount: selectedItemAmount };
 
         try {
-            const response = await axios.post('${process.env.API_URL}/api/shopping', newItem);
+            const response = await axios.post("https://8080-1fe1ix-vslabor-1656h38tm4q.ws-eu117.gitpod.io/api/shopping", newItem);
+            //const response = await axios.post('${process.env.API_URL}/api/shopping', newItem);
             setItems([...items, response.data]);
             setSelectedItemName('');
             setSelectedItemAmount(1);
@@ -97,6 +100,7 @@ export default function ShoppingApp() {
     // Delete an item from the shopping list
     const deleteItem = async (name) => {
         try {
+            //await axios.delete(`$https://8080-1fe1ix-vslabor-1656h38tm4q.ws-eu117.gitpod.io/api/shopping/api/shopping/${name}`);
             await axios.delete(`${BASE_URL}/api/shopping/${name}`);
             setItems(items.filter(item => item.name !== name));
         } catch (error) {
