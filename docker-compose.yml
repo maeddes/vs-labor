@@ -27,14 +27,16 @@ services:
       - "8080:8080"
 
   shopping-frontend:  # Dein Next.js Frontend
+    image: vs-labor-shopping-frontend
     build: .
     environment:
-      #API_URL: "http://shopping-backend:8080/api/shopping"
-      API_URL: "https://8080-1fe1ix-vslabor-1656h38tm4q.ws-eu117.gitpod.io/api/shopping"  # Verweis auf das Backend
+      API_URL: "http://shopping-backend:8080/api/shopping"
+      #API_URL: "https://8080-1fe1ix-vslabor-1656h38tm4q.ws-eu117.gitpod.io/api/shopping"  # Verweis auf das Backend
     ports:
       - "3000:3000"
     depends_on:
       - shopping-backend
+
 
 volumes:
   shoppingdb-data:  # Für die Persistenz der Datenbankdaten
